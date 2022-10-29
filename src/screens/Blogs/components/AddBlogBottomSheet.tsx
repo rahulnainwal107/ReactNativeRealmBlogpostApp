@@ -1,37 +1,80 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Easing,
+} from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  interpolate,
+  useDerivedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 import CustomTextInput from '../../../components/CustomTextInput';
 import Button from '../../../components/Button';
 
+const {height} = Dimensions.get('window');
+
 type AddBlogBottomSheetProps = {
   hideBottomSheet: () => void;
+  showBottomSheet: boolean;
 };
 
-const AddBlogBottomSheet = ({hideBottomSheet}: AddBlogBottomSheetProps) => {
+const AddBlogBottomSheet = ({
+  hideBottomSheet,
+  showBottomSheet,
+}: AddBlogBottomSheetProps) => {
+  console.log('showBottomSheet ', showBottomSheet);
+  const bottomSheetSharedValue = useDerivedValue(
+    () =>
+      showBottomSheet
+        ? withTiming(1, {duration: 1000})
+        : withTiming(0, {duration: 1000}),
+    [showBottomSheet],
+  );
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: interpolate(
+            bottomSheetSharedValue.value,
+            [0, 0.25, 0.5, 1],
+            [height, 0, -height / 2, -height],
+          ),
+        },
+      ],
+    };
+  });
+
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, animatedStyle]}>
       <TouchableOpacity
         style={styles.touchablePart}
         onPress={hideBottomSheet}
       />
-      <CustomTextInput
-        placeholder="Blog Title"
-        value=""
-        onChangeText={() => {}}
-      />
-      <CustomTextInput
-        placeholder="Blog Description"
-        value=""
-        onChangeText={() => {}}
-        multiline={true}
-      />
-      <Button
-        name="Add Blog"
-        onPress={undefined}
-        customStyle={styles.buttonCustomStyle}
-      />
-    </View>
+      <View style={{backgroundColor: 'white'}}>
+        <CustomTextInput
+          placeholder="Blog Title"
+          value=""
+          onChangeText={() => {}}
+        />
+        <CustomTextInput
+          placeholder="Blog Description"
+          value=""
+          onChangeText={() => {}}
+          multiline={true}
+        />
+        <Button
+          name="Add Blog"
+          onPress={undefined}
+          customStyle={styles.buttonCustomStyle}
+        />
+      </View>
+    </Animated.View>
   );
 };
 
@@ -39,11 +82,12 @@ export default AddBlogBottomSheet;
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    top: 0,
+    // position: 'absolute',
+    // bottom: 0,
+    // left: 0,
+    // right: 0,
+    // top: 0,
+    height: height,
     backgroundColor: 'transparent',
     padding: 10,
     justifyContent: 'flex-end',

@@ -13,9 +13,9 @@ const BlogsContainer = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View>
       <FlatList
-        data={[1, 2]}
+        data={[1, 2, 4, 5, 6, 7, 78, 8]}
         keyExtractor={(item, index) => index.toString()}
         renderItem={item => (
           <BlogItem
@@ -36,9 +36,10 @@ const BlogsContainer = () => {
           />
         }
       />
-      {showBottomSheet ? (
-        <AddBlogBottomSheet hideBottomSheet={hideBottomSheet} />
-      ) : null}
+      <AddBlogBottomSheet
+        hideBottomSheet={hideBottomSheet}
+        showBottomSheet={showBottomSheet}
+      />
     </View>
   );
 };
