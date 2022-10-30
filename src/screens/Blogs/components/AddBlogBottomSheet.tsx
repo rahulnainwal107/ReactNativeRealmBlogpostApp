@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  Easing,
-} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   interpolate,
@@ -21,13 +15,20 @@ const {height} = Dimensions.get('window');
 type AddBlogBottomSheetProps = {
   hideBottomSheet: () => void;
   showBottomSheet: boolean;
+  addBlog: () => void;
+  onChangeBlogInput: (value: string, inputType: string) => void;
+  inputData: {title: string; description: string};
 };
 
-const AddBlogBottomSheet = ({
+const AddBlogBottomSheet: React.FC<AddBlogBottomSheetProps> = ({
   hideBottomSheet,
   showBottomSheet,
-}: AddBlogBottomSheetProps) => {
-  console.log('showBottomSheet ', showBottomSheet);
+  addBlog,
+  onChangeBlogInput,
+  inputData,
+}) => {
+  const {title, description} = inputData;
+
   const bottomSheetSharedValue = useDerivedValue(
     () =>
       showBottomSheet
@@ -42,8 +43,8 @@ const AddBlogBottomSheet = ({
         {
           translateY: interpolate(
             bottomSheetSharedValue.value,
-            [0, 0.25, 0.5, 1],
-            [height, 0, -height / 2, -height],
+            [0, 1],
+            [height, -200],
           ),
         },
       ],
@@ -59,18 +60,18 @@ const AddBlogBottomSheet = ({
       <View style={{backgroundColor: 'white'}}>
         <CustomTextInput
           placeholder="Blog Title"
-          value=""
-          onChangeText={() => {}}
+          value={title}
+          onChangeText={text => onChangeBlogInput(text, 'title')}
         />
         <CustomTextInput
           placeholder="Blog Description"
-          value=""
-          onChangeText={() => {}}
+          value={description}
+          onChangeText={text => onChangeBlogInput(text, 'description')}
           multiline={true}
         />
         <Button
           name="Add Blog"
-          onPress={undefined}
+          onPress={addBlog}
           customStyle={styles.buttonCustomStyle}
         />
       </View>

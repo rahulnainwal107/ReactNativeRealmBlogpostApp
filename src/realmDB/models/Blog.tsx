@@ -4,7 +4,7 @@ export class Blog extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   title!: string;
   description!: string;
-  isDeleted!: false;
+  isDeleted!: boolean;
   createdAt!: Date;
 
   static generate(title: string, description: string) {

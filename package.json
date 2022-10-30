@@ -13,6 +13,7 @@
     "@realm/react": "^0.4.0",
     "react": "18.1.0",
     "react-native": "0.70.4",
+    "react-native-get-random-values": "^1.8.0",
     "react-native-reanimated": "^2.12.0",
     "realm": "^11.0.0"
   },
