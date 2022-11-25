@@ -1,18 +1,15 @@
-import React, {useState, useMemo, useCallback} from 'react';
+import React, {useMemo, useCallback, useEffect} from 'react';
 import {View, FlatList} from 'react-native';
 
+import {useNavigation} from '@react-navigation/native';
+
 import {Blog} from '../../realmDB/models/Blog';
-import ListHeader from '../../components/ListHeader';
 import BlogItem from './components/BlogItem';
-import AddBlogBottomSheet from './components/AddBlogBottomSheet';
 import {BlogRealmContext} from '../../realmDB/schema';
+import HeaderIcon from '../../components/HeaderIcon';
+import ListEmptyComponent from '../../components/ListEmptyComponent';
 
 const {useQuery, useRealm} = BlogRealmContext;
-
-type AddBlogProps = {
-  title: string;
-  description: string;
-};
 
 type BlogItemProp = {
   _id: Realm.BSON.ObjectId;
@@ -23,42 +20,28 @@ type BlogItemProp = {
 };
 
 const BlogsContainer: React.FC = () => {
-  const result = useQuery(Blog);
   const realm = useRealm();
-  const [showBottomSheet, setShowBottomSheet] = useState<boolean>(false);
+  const result = useQuery(Blog);
+  const navigation = useNavigation();
 
-  // Blog inputs
-  const [blogData, setBlogData] = useState<AddBlogProps>({
-    title: '',
-    description: '',
-  });
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+        result?.length ? (
+          <HeaderIcon showIcon={true} onPress={onAddPress} />
+        ) : null,
+    });
+  }, [navigation, result]);
 
   const blogs = useMemo(() => result.sorted('createdAt'), [result]);
 
-  const hideBottomSheet = useCallback(() => {
-    setShowBottomSheet(val => !val);
-  }, [showBottomSheet]);
+  const onAddPress = () => {
+    navigation.navigate('AddUpdateBlog');
+  };
 
-  const addBlog = useCallback((): void => {
-    const {title, description} = blogData;
-    if (!title || !description) {
-      return;
-    }
-    realm.write(() => {
-      realm.create('Blog', Blog.generate(title, description));
-    });
-    hideBottomSheet();
-    setBlogData({title: '', description: ''});
-  }, [realm, blogData]);
-
-  const updateBlog = useCallback(
-    (blog: BlogItemProp): void => {
-      realm.write(() => {
-        blog.isDeleted = !blog.isDeleted;
-      });
-    },
-    [realm],
-  );
+  const updateBlog = useCallback((blog: BlogItemProp): void => {
+    navigation.navigate('AddUpdateBlog', {blog});
+  }, []);
 
   const deleteBlog = useCallback(
     (blog: BlogItemProp): void => {
@@ -69,22 +52,11 @@ const BlogsContainer: React.FC = () => {
         // realm?.delete(realm?.objectForPrimaryKey('Task', id));
       });
     },
-    [realm, blogData],
-  );
-
-  const onChangeBlogInput = useCallback(
-    (value: string, inputFor: string): void => {
-      if (inputFor === 'title') {
-        setBlogData({...blogData, title: value});
-      } else {
-        setBlogData({...blogData, description: value});
-      }
-    },
-    [blogData],
+    [realm],
   );
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <FlatList
         data={blogs}
         keyExtractor={(item, index) => item._id.toString()}
@@ -95,21 +67,8 @@ const BlogsContainer: React.FC = () => {
             updateBlog={updateBlog.bind(this, item)}
           />
         )}
+        ListEmptyComponent={<ListEmptyComponent onPress={onAddPress} />}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <ListHeader
-            headerTitle="All Blogs"
-            rightIcons={true}
-            onPressRightIcon={hideBottomSheet}
-          />
-        }
-      />
-      <AddBlogBottomSheet
-        hideBottomSheet={hideBottomSheet}
-        showBottomSheet={showBottomSheet}
-        addBlog={addBlog}
-        onChangeBlogInput={onChangeBlogInput}
-        inputData={blogData}
       />
     </View>
   );

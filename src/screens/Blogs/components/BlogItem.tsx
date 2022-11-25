@@ -23,7 +23,9 @@ const BlogItem: React.FC<BlogItemProps> = ({
 }) => {
   const {title, description, isDeleted, createdAt} = item;
   return (
-    <View style={isDeleted ? styles.deleteContainer : styles.container}>
+    <TouchableOpacity
+      style={isDeleted ? styles.deleteContainer : styles.container}
+      onPress={updateBlog}>
       <View style={{justifyContent: 'center', flex: 1}}>
         <Text numberOfLines={2} style={styles.titleText}>
           {title}
@@ -32,22 +34,16 @@ const BlogItem: React.FC<BlogItemProps> = ({
           {description}
         </Text>
         <Text numberOfLines={2} style={styles.dateText}>
-          {description}
+          {createdAt.toLocaleDateString()}
         </Text>
       </View>
-      <TouchableOpacity style={{marginHorizontal: 5}} onPress={updateBlog}>
-        <Image
-          source={require('../../../assets/edit.png')}
-          style={{height: 25, width: 25, tintColor: 'red'}}
-        />
-      </TouchableOpacity>
       <TouchableOpacity style={{marginHorizontal: 5}} onPress={onPressDelete}>
         <Image
           source={require('../../../assets/delete.png')}
           style={{height: 25, width: 25, tintColor: 'red'}}
         />
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -57,7 +53,7 @@ const styles = StyleSheet.create({
   container: {
     margin: 10,
     padding: 10,
-    backgroundColor: 'grey',
+    backgroundColor: '#c9fec9',
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 5,
@@ -67,7 +63,7 @@ const styles = StyleSheet.create({
   deleteContainer: {
     margin: 10,
     padding: 10,
-    backgroundColor: 'grey',
+    backgroundColor: '#f4d4d5',
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 5,
@@ -83,7 +79,8 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   dateText: {
-    fontSize: 10,
+    fontSize: 12,
     letterSpacing: 1,
+    color: 'grey',
   },
 });

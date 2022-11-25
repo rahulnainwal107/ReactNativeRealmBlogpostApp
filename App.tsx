@@ -12,9 +12,10 @@ import React from 'react';
 import {SafeAreaView, useColorScheme} from 'react-native';
 
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {NavigationContainer} from '@react-navigation/native';
 
 import {BlogRealmContext} from './src/realmDB/schema';
-import BlogsContainer from './src/screens/Blogs/BlogsContainer';
+import Initial from './src/navigation/Initial';
 
 const App = () => {
   const {RealmProvider} = BlogRealmContext;
@@ -29,7 +30,9 @@ const App = () => {
     <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaView style={backgroundStyle}>
         <RealmProvider>
-          <BlogsContainer />
+          <NavigationContainer>
+            <Initial />
+          </NavigationContainer>
         </RealmProvider>
       </SafeAreaView>
     </GestureHandlerRootView>
