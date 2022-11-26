@@ -17,15 +17,19 @@ const UpdateBlogContainer: React.FC<UpdateBlogContainerProps> = ({
 
   const updateBlog = useCallback(
     (formInput: AddBlogProps): void => {
-      const {title, description} = formInput;
-      if (!title || !description) {
-        return;
+      try {
+        const {title, description} = formInput;
+        if (!title || !description) {
+          return;
+        }
+        realm.write(() => {
+          blogData.title = title;
+          blogData.description = description;
+        });
+        navigation.goBack();
+      } catch (error) {
+        console.log('Error in updating blog !');
       }
-      realm.write(() => {
-        blogData.title = title;
-        blogData.description = description;
-      });
-      navigation.goBack();
     },
     [realm, blogData],
   );
@@ -34,7 +38,10 @@ const UpdateBlogContainer: React.FC<UpdateBlogContainerProps> = ({
     <BlogForm
       buttonName="Update Blog"
       onPress={updateBlog}
-      initialValue={{title: blogData?.title!, description: blogData?.title!}}
+      initialValue={{
+        title: blogData?.title!,
+        description: blogData?.description!,
+      }}
     />
   );
 };

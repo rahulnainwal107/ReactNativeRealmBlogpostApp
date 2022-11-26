@@ -30,6 +30,7 @@ const CustomTextInput = ({
             minHeight: multiline ? TEXT_INPUT_HEIGHT * 3 : TEXT_INPUT_HEIGHT,
             paddingVertical: multiline ? 10 : 0,
             borderColor: conditionalColor,
+            textAlignVertical: multiline ? 'top' : 'center',
           },
         ]}
         onBlur={() => setIsFocus(false)}

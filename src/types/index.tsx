@@ -1,5 +1,4 @@
 import Realm from 'realm';
-import {RouteProp} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ViewStyle} from 'react-native';
 
@@ -79,4 +78,9 @@ export type InitialStackParamList = {
   UpdateBlogContainer: {
     id: Realm.BSON.ObjectId;
   };
+};
+
+export type BlogRenderItemProps = {
+  item: BlogItemProp;
+  index: number;
 };

@@ -21,7 +21,7 @@ const BlogItem: React.FC<BlogItemProps> = ({
           {description}
         </Text>
         <Text numberOfLines={2} style={styles.dateText}>
-          {createdAt.toLocaleDateString()}
+          {createdAt.toDateString()}
         </Text>
       </View>
       <TouchableOpacity style={{marginHorizontal: 5}} onPress={onPressDelete}>
@@ -60,10 +60,12 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 18,
     letterSpacing: 1,
+    marginBottom: 5,
   },
   descriptionText: {
     fontSize: 12,
     letterSpacing: 1,
+    marginBottom: 5,
   },
   dateText: {
     fontSize: 12,

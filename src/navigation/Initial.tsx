@@ -12,11 +12,20 @@ const Stack = createNativeStackNavigator<InitialStackParamList>();
 const Initial = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Blog" component={BlogsContainer} />
-      <Stack.Screen name="AddBlogContainer" component={AddBlogContainer} />
+      <Stack.Screen
+        name="Blog"
+        component={BlogsContainer}
+        options={{title: 'Blogs'}}
+      />
+      <Stack.Screen
+        name="AddBlogContainer"
+        component={AddBlogContainer}
+        options={{title: 'Add Blog'}}
+      />
       <Stack.Screen
         name="UpdateBlogContainer"
         component={UpdateBlogContainer}
+        options={{title: 'Update Blog'}}
       />
     </Stack.Navigator>
   );

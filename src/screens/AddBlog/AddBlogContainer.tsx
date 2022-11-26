@@ -15,14 +15,18 @@ const AddBlogContainer: React.FC<AddBlogContainerProps> = () => {
 
   const addBlog = useCallback(
     (formInput: AddBlogProps): void => {
-      const {title, description} = formInput;
-      if (!title || !description) {
-        return;
+      try {
+        const {title, description} = formInput;
+        if (!title || !description) {
+          return;
+        }
+        realm.write(() => {
+          realm.create('Blog', Blog.generate(title, description));
+        });
+        navigation.goBack();
+      } catch (error) {
+        console.log('Error in adding blog !');
       }
-      realm.write(() => {
-        realm.create('Blog', Blog.generate(title, description));
-      });
-      navigation.goBack();
     },
     [realm],
   );
