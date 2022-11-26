@@ -1,28 +1,18 @@
 import React, {useMemo, useCallback, useEffect} from 'react';
 import {View, FlatList} from 'react-native';
 
-import {useNavigation} from '@react-navigation/native';
-
 import {Blog} from '../../realmDB/models/Blog';
 import BlogItem from './components/BlogItem';
 import {BlogRealmContext} from '../../realmDB/schema';
 import HeaderIcon from '../../components/HeaderIcon';
 import ListEmptyComponent from '../../components/ListEmptyComponent';
+import {BlogItemProp, BlogsContainerProps} from '../../types/index';
 
 const {useQuery, useRealm} = BlogRealmContext;
 
-type BlogItemProp = {
-  _id: Realm.BSON.ObjectId;
-  title: string;
-  description: string;
-  isDeleted: boolean;
-  createdAt: Date;
-};
-
-const BlogsContainer: React.FC = () => {
+const BlogsContainer: React.FC<BlogsContainerProps> = ({navigation}) => {
   const realm = useRealm();
   const result = useQuery(Blog);
-  const navigation = useNavigation();
 
   useEffect(() => {
     navigation.setOptions({
@@ -36,18 +26,17 @@ const BlogsContainer: React.FC = () => {
   const blogs = useMemo(() => result.sorted('createdAt'), [result]);
 
   const onAddPress = () => {
-    navigation.navigate('AddUpdateBlog');
+    navigation.navigate('AddBlogContainer');
   };
 
   const updateBlog = useCallback((blog: BlogItemProp): void => {
-    navigation.navigate('AddUpdateBlog', {blog});
+    navigation.navigate('UpdateBlogContainer', {id: blog._id});
   }, []);
 
   const deleteBlog = useCallback(
     (blog: BlogItemProp): void => {
       realm.write(() => {
         realm.delete(blog);
-
         // Alternatively if passing the ID as the argument to handleDeleteTask:
         // realm?.delete(realm?.objectForPrimaryKey('Task', id));
       });

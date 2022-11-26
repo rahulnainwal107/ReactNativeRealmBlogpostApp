@@ -1,11 +1,9 @@
 import React from 'react';
 import {Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-type ListEmptyComponent = {
-  onPress?: () => void;
-};
+import {ListEmptyComponentProps} from '../types/index';
 
-const ListEmptyComponent: React.FC<ListEmptyComponent> = ({onPress}) => {
+const ListEmptyComponent: React.FC<ListEmptyComponentProps> = ({onPress}) => {
   return (
     <TouchableOpacity style={styles.mainContainer} onPress={onPress}>
       <Text style={styles.textStyle}>

@@ -1,10 +1,7 @@
-import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
+import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
-type HeaderIconProps = {
-  showIcon: boolean;
-  onPress?: () => void;
-};
+import {HeaderIconProps} from '../types/index';
 
 const HeaderIcon = ({showIcon, onPress}: HeaderIconProps) => {
   return (

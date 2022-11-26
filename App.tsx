@@ -9,6 +9,7 @@
  */
 
 import React from 'react';
+import {LogBox} from 'react-native';
 import {SafeAreaView, useColorScheme} from 'react-native';
 
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -16,6 +17,10 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import {BlogRealmContext} from './src/realmDB/schema';
 import Initial from './src/navigation/Initial';
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 const App = () => {
   const {RealmProvider} = BlogRealmContext;

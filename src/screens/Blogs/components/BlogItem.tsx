@@ -1,20 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import Realm from 'realm';
 
-type BlogProp = {
-  _id: Realm.BSON.ObjectId;
-  title: string;
-  description: string;
-  isDeleted: boolean;
-  createdAt: Date;
-};
-
-type BlogItemProps = {
-  item: BlogProp;
-  onPressDelete: () => void;
-  updateBlog: () => void;
-};
+import {BlogItemProps} from '../../../types/index';
 
 const BlogItem: React.FC<BlogItemProps> = ({
   item,
@@ -30,7 +17,7 @@ const BlogItem: React.FC<BlogItemProps> = ({
         <Text numberOfLines={2} style={styles.titleText}>
           {title}
         </Text>
-        <Text numberOfLines={2} style={styles.descriptionText}>
+        <Text numberOfLines={4} style={styles.descriptionText}>
           {description}
         </Text>
         <Text numberOfLines={2} style={styles.dateText}>

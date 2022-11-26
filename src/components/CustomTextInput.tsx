@@ -1,12 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
 
-type CustomTextInputProps = {
-  placeholder: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  multiline?: boolean;
-};
+import {CustomTextInputProps} from '../types/index';
 
 const TEXT_INPUT_HEIGHT = 40;
 

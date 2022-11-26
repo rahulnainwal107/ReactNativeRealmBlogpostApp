@@ -1,11 +1,7 @@
 import React from 'react';
-import {Text, TouchableOpacity, StyleSheet, ViewStyle} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-type ButtonComponentProps = {
-  name: string;
-  onPress?: () => void;
-  customStyle?: ViewStyle;
-};
+import {ButtonComponentProps} from '../types/index';
 
 const ButtonComponent = ({
   name,
